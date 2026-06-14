@@ -1,6 +1,9 @@
 
+
 // Simple as possible, take one host one start and one end, use sockets + connect to forloop and check 
 // if port is open or not.
+
+// V2 
 
 
 #include <stdio.h>
@@ -12,6 +15,24 @@
 #include <sys/time.h>
 #include <unistd.h>
 
+
+struct scan_context {
+    const char *host;
+    int next_port;
+    int end_port;
+};
+
+// get the next port for routine by struct pointer
+// return the next port (int) on success else return -1
+int get_next_port(struct scan_context *ctx) {
+    
+    if ( ctx->next_port > ctx->end_port ) return -1;
+
+    int port = ctx->next_port;
+    ctx->next_port++;
+    return port;
+
+}
 
 
 // take a string and try to convert to integer
